@@ -71,3 +71,25 @@ summary_mcmc <- function(matrix, k, A, B, Sd){
   plot(matrix[-(1:k),3], type = "l", xlab="True value = red line" , main = "Chain values of sd")
   abline(h = Sd, col="red" )
 }
+
+#### compare_outcomes
+
+compare_outcomes <- function(iterations){ # a vector of the numbers of iterations
+  
+  mu <- c() 
+  sigma<- c()
+  
+  for(i in seq_along(iterations)){
+    p1 <- runif(1, min=0, max=10)
+    p2 <- rnorm(1, mean = 0, sd = 5)
+    p3 <- runif(1, min=0, max=30)
+    startvalue <- c(p1,p2,p3) # randomly choose starting values from the priors
+    
+    # run MCMC 
+    result <- run_metropolis_MCMC(startvalue, iterations[i])
+    mu <- c(mu, mean(result[,1]))  # append the mean of the chain for the slopes
+    sigma <- c(sigma, sqrt(var(result[,1]))) # append the std of the chain for the slopes
+  }
+  output <- data.frame(MCMC.iterations = iterations, Mean = mu, Std.Error = sigma)
+  return(output)
+}
