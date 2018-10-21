@@ -30,3 +30,11 @@ summary_mcmc(chain, burnIn, trueA, trueB, trueSd)
 # for comparison:
 summary(lm(y~x))
 
+### Test compare_outcomes function for 1000,10000,100000
+n <- 10^seq(3,5)
+compare_outcomes(n)
+## Solutions are
+## MCMC.iterations     Mean Std.Error
+#1           1e+03 4.817297 0.6526214
+#2           1e+04 4.999467 0.2834009
+#3           1e+05 5.004784 0.2190319
