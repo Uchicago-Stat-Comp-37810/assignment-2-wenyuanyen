@@ -74,7 +74,8 @@ summary_mcmc <- function(matrix, k, A, B, Sd){
 
 #### compare_outcomes
 
-compare_outcomes <- function(iterations){ # a vector of the numbers of iterations
+# burn_perc is the percentage of burning-in in the first part of iterations
+compare_outcomes <- function(iterations, burn_perc){ # a vector of the numbers of iterations
   
   mu <- c() 
   sigma<- c()
@@ -87,8 +88,8 @@ compare_outcomes <- function(iterations){ # a vector of the numbers of iteration
     
     # run MCMC 
     result <- run_metropolis_MCMC(startvalue, iterations[i])
-    mu <- c(mu, mean(result[,1]))  # append the mean of the chain for the slopes
-    sigma <- c(sigma, sqrt(var(result[,1]))) # append the std of the chain for the slopes
+    mu <- c(mu, mean(result[-c(1:(burn_perc *  iterations[i] )),1]))  # append the mean of the chain for the slopes
+    sigma <- c(sigma, sqrt(var(result[-c(1:(burn_perc *  iterations[i] )),1]))) # append the std of the chain for the slopes
   }
   output <- data.frame(MCMC.iterations = iterations, Mean = mu, Std.Error = sigma)
   return(output)
